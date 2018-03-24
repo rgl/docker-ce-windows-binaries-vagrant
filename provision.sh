@@ -101,12 +101,8 @@ function clone-repo {
     popd
 }
 
-clone-repo https://github.com/docker/docker-ce.git docker-ce v18.02.0-ce
+clone-repo https://github.com/docker/docker-ce.git docker-ce v18.03.0-ce
 cd docker-ce
-# hack the build scripts to only build the windows binaries.
-sed -i -E 's,(DOCKER_BUILD_PKGS:=).*cross-win.*,\1cross-win,' components/packaging/Makefile
-mv components/cli/scripts/build/{windows,cross}
-git diff --stat
 time make static
 
 
