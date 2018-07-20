@@ -67,6 +67,7 @@ EOF
 # see https://docs.docker.com/engine/installation/linux/ubuntu/#install-using-the-repository
 # NB we can also install a specific version from https://download.docker.com/linux/ubuntu/dists/
 
+apt-get install -y gnupg
 apt-get install -y apt-transport-https #ca-certificates #software-properties-common
 wget -qO- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 [ -z "$(apt-key fingerprint 0EBFCD88 | grep '9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88')" ] && echo 'failed to verify docker apt repo fingerprint' && exit 1
@@ -86,6 +87,12 @@ git config --global user.name 'Rui Lopes'
 git config --global user.email 'rgl@ruilopes.com'
 git config --global push.default simple
 git config --global core.autocrlf false
+
+
+#
+# install build dependencies.
+
+apt-get install -y make
 
 
 #
