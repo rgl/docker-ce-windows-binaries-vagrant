@@ -1,4 +1,4 @@
-This is a [Vagrant](https://www.vagrantup.com/) Environment for building the static docker-ce Windows binaries.
+This is a [Vagrant](https://www.vagrantup.com/) Environment for building the static [docker-ce](https://github.com/docker/docker-ce) Windows binaries.
 
 This exists because recent builds are no longer available at https://download.docker.com/win/static/stable/x86_64/.
 
