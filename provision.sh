@@ -108,7 +108,7 @@ function clone-repo {
     popd
 }
 
-clone-repo https://github.com/docker/docker-ce.git docker-ce v19.03.10
+clone-repo https://github.com/docker/docker-ce.git docker-ce v19.03.11
 cd docker-ce
 time make static
 
@@ -117,3 +117,4 @@ time make static
 # copy built artefacts to the host.
 
 cp components/packaging/static/build/win/*.zip /vagrant
+sha256sum components/packaging/static/build/win/*.zip
