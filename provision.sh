@@ -108,7 +108,7 @@ function clone-repo {
     popd
 }
 
-clone-repo https://github.com/docker/docker-ce.git docker-ce v19.03.13
+clone-repo https://github.com/docker/docker-ce.git docker-ce v19.03.14
 cd docker-ce
 time make static
 
