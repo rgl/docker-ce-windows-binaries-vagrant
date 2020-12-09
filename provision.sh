@@ -76,9 +76,6 @@ apt-get update
 apt-get install -y docker-ce
 docker version
 
-# let the vagrant user manage docker.
-usermod -aG docker vagrant
-
 
 #
 # configure git.
@@ -92,7 +89,7 @@ git config --global core.autocrlf false
 #
 # install build dependencies.
 
-apt-get install -y make
+apt-get install -y make zip
 
 
 #
@@ -108,13 +105,34 @@ function clone-repo {
     popd
 }
 
-clone-repo https://github.com/docker/docker-ce.git docker-ce v19.03.14
-cd docker-ce
-time make static
+export VERSION='20.10.0'
 
+# build docker daemon.
+clone-repo https://github.com/moby/moby.git moby v$VERSION
+cd moby
+wget -qO- https://github.com/moby/moby/pull/41590.patch | patch -p1
+time make win
+ls -laF bundles/cross/windows/amd64/
+cd ..
+
+# build docker cli.
+clone-repo https://github.com/docker/cli.git cli v$VERSION
+cd cli
+echo "$VERSION" >VERSION
+time make -f docker.Makefile binary-windows
+ls -laF build/
+cd ..
 
 #
-# copy built artefacts to the host.
+# package.
 
-cp components/packaging/static/build/win/*.zip /vagrant
-sha256sum components/packaging/static/build/win/*.zip
+mkdir docker
+cd docker
+cp ../moby/bundles/cross/windows/amd64/dockerd-$VERSION.exe dockerd.exe
+cp ../cli/build/docker-windows-amd64.exe docker.exe
+cd ..
+zip -9 -r docker-$VERSION.zip docker
+sha256sum *.zip
+if [ -d /vagrant ]; then
+    cp *.zip /vagrant
+fi

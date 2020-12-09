@@ -1,0 +1,16 @@
+name: Build
+on: [push]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: sudo bash ./provision.sh
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-artifacts
+          path: |
+            *.zip
