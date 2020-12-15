@@ -105,14 +105,14 @@ function clone-repo {
     popd
 }
 
-export VERSION='20.10.0'
+export VERSION='20.10.1'
 
 # build docker daemon.
 clone-repo https://github.com/moby/moby.git moby v$VERSION
 cd moby
 wget -qO- https://github.com/moby/moby/pull/41590.patch | patch -p1
 time make win
-ls -laF bundles/cross/windows/amd64/
+find bundles/cross/windows/amd64/ -type f -exec ls -laF {} \;
 cd ..
 
 # build docker cli.
@@ -120,7 +120,7 @@ clone-repo https://github.com/docker/cli.git cli v$VERSION
 cd cli
 echo "$VERSION" >VERSION
 time make -f docker.Makefile binary-windows
-ls -laF build/
+find build/ -type f -exec ls -laF {} \;
 cd ..
 
 #
