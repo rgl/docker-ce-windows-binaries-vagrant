@@ -105,7 +105,7 @@ function clone-repo {
     popd
 }
 
-export VERSION='20.10.1'
+export VERSION='20.10.2'
 
 # build docker daemon.
 clone-repo https://github.com/moby/moby.git moby v$VERSION
