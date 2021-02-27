@@ -106,9 +106,10 @@ function clone-repo {
 }
 
 export VERSION='20.10.4'
+export GIT_REF="v$VERSION"
 
 # build docker daemon.
-clone-repo https://github.com/moby/moby.git moby v$VERSION
+clone-repo https://github.com/moby/moby.git moby $GIT_REF
 cd moby
 wget -qO- https://github.com/moby/moby/pull/41590.patch | patch -p1
 time make win
@@ -116,7 +117,7 @@ find bundles/cross/windows/amd64/ -type f -exec ls -laF {} \;
 cd ..
 
 # build docker cli.
-clone-repo https://github.com/docker/cli.git cli v$VERSION
+clone-repo https://github.com/docker/cli.git cli $GIT_REF
 cd cli
 echo "$VERSION" >VERSION
 time make -f docker.Makefile binary-windows
