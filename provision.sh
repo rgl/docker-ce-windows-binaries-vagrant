@@ -105,8 +105,8 @@ function clone-repo {
     popd
 }
 
-export VERSION='20.10.4'
-export GIT_REF="v$VERSION"
+export VERSION="master-$(date +%Y%m%d%H%M%S)"
+export GIT_REF='master'
 
 # build docker daemon.
 clone-repo https://github.com/moby/moby.git moby $GIT_REF
