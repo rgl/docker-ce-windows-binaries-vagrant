@@ -105,7 +105,7 @@ function clone-repo {
     popd
 }
 
-export VERSION='20.10.4'
+export VERSION='20.10.5'
 export GIT_REF="v$VERSION"
 
 # build docker daemon.
