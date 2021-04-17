@@ -71,9 +71,12 @@ apt-get install -y gnupg
 apt-get install -y apt-transport-https #ca-certificates #software-properties-common
 wget -qO- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 [ -z "$(apt-key fingerprint 0EBFCD88 | grep '9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88')" ] && echo 'failed to verify docker apt repo fingerprint' && exit 1
-echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) edge" >/etc/apt/sources.list.d/docker.list
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
 apt-get update
-apt-get install -y docker-ce
+apt-cache madison docker-ce
+docker_version='20.10.6'
+docker_version="$(apt-cache madison docker-ce | awk "/$docker_version~/{print \$3}")"
+apt-get install -y "docker-ce=$docker_version" "docker-ce-cli=$docker_version" containerd.io
 docker version
 
 
@@ -105,7 +108,7 @@ function clone-repo {
     popd
 }
 
-export VERSION='20.10.5'
+export VERSION='20.10.6'
 export GIT_REF="v$VERSION"
 
 # build docker daemon.
@@ -120,7 +123,7 @@ cd ..
 clone-repo https://github.com/docker/cli.git cli $GIT_REF
 cd cli
 echo "$VERSION" >VERSION
-time make -f docker.Makefile binary-windows
+time docker buildx bake --set binary.platform=windows/amd64
 find build/ -type f -exec ls -laF {} \;
 cd ..
 
