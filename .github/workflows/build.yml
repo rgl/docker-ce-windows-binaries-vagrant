@@ -14,3 +14,23 @@ jobs:
           name: docker-artifacts
           path: |
             *.zip
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    name: Release
+    runs-on: ubuntu-20.04
+    needs:
+      - build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      - name: Release notes
+        run: |
+          echo "sha256 $(sha256sum docker-artifacts/*.zip | awk '{print $1}')" >release-notes.md
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: release-notes.md
+          artifacts: docker-artifacts/*.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
