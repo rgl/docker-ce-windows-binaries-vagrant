@@ -74,8 +74,8 @@ wget -qO- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
 apt-get update
 apt-cache madison docker-ce
-docker_version='20.10.23'
-docker_version="$(apt-cache madison docker-ce | awk "/$docker_version~/{print \$3}")"
+docker_version='23.0.0'
+docker_version="$(apt-cache madison docker-ce | awk "/$docker_version/{print \$3}")"
 apt-get install -y "docker-ce=$docker_version" "docker-ce-cli=$docker_version" containerd.io
 docker version
 
@@ -108,15 +108,14 @@ function clone-repo {
     popd
 }
 
-export VERSION='20.10.23'
+export VERSION='23.0.0'
 export GIT_REF="v$VERSION"
 
 # build docker daemon.
 clone-repo https://github.com/moby/moby.git moby $GIT_REF
 cd moby
-wget -qO- https://github.com/moby/moby/pull/41590.patch | patch -p1
 time make win
-find bundles/cross/windows/amd64/ -type f -exec ls -laF {} \;
+find bundles/binary/ -type f -exec ls -laF {} \;
 cd ..
 
 # build docker cli.
@@ -132,7 +131,7 @@ cd ..
 
 mkdir docker
 cd docker
-cp ../moby/bundles/cross/windows/amd64/dockerd-$VERSION.exe dockerd.exe
+cp ../moby/bundles/binary/*.exe .
 cp ../cli/build/docker-windows-amd64.exe docker.exe
 cd ..
 zip -9 -r docker-$VERSION.zip docker
