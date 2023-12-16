@@ -7,8 +7,10 @@ Vagrant.configure('2') do |config|
     lv.cpu_mode = 'host-passthrough'
     lv.nested = false
     lv.keymap = 'pt'
+    lv.machine_virtual_size = 32
     config.vm.synced_folder '.', '/vagrant', type: 'nfs', nfs_version: '4.2', nfs_udp: false
   end
 
+  config.vm.provision :shell, path: 'provision-resize-disk.sh'
   config.vm.provision :shell, path: 'provision.sh'
 end
