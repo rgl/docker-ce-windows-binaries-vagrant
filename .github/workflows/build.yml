@@ -5,11 +5,11 @@ jobs:
     name: Build
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         run: sudo bash ./provision.sh
       - name: Archive Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-artifacts
           path: |
@@ -22,9 +22,9 @@ jobs:
       - build
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Release notes
         run: |
           echo "sha256 $(sha256sum docker-artifacts/*.zip | awk '{print $1}')" >release-notes.md
