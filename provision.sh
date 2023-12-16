@@ -114,7 +114,7 @@ export GIT_REF="v$VERSION"
 # build docker daemon.
 clone-repo https://github.com/moby/moby.git moby $GIT_REF
 cd moby
-time make win
+time docker buildx bake all --set *.platform=windows/amd64
 find bundles/binary/ -type f -exec ls -laF {} \;
 cd ..
 
