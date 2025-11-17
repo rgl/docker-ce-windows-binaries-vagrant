@@ -74,7 +74,7 @@ wget -qO- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
 apt-get update
 apt-cache madison docker-ce
-docker_version='28.5.1'
+docker_version='29.0.2'
 docker_version="$(apt-cache madison docker-ce | awk "/$docker_version/{print \$3}")"
 apt-get install -y "docker-ce=$docker_version" "docker-ce-cli=$docker_version" containerd.io
 docker version
@@ -108,18 +108,19 @@ function clone-repo {
     popd
 }
 
-export VERSION='28.5.1'
-export GIT_REF="v$VERSION"
+export VERSION='29.0.2'
+export DOCKER_GIT_REF="docker-v$VERSION"
+export DOCKER_CLI_GIT_REF="v$VERSION"
 
 # build docker daemon.
-clone-repo https://github.com/moby/moby.git moby $GIT_REF
+clone-repo https://github.com/moby/moby.git moby $DOCKER_GIT_REF
 cd moby
 time docker buildx bake all --set *.platform=windows/amd64
 find bundles/binary/ -type f -exec ls -laF {} \;
 cd ..
 
 # build docker cli.
-clone-repo https://github.com/docker/cli.git cli $GIT_REF
+clone-repo https://github.com/docker/cli.git cli $DOCKER_CLI_GIT_REF
 cd cli
 echo "$VERSION" >VERSION
 time docker buildx bake --set binary.platform=windows/amd64
