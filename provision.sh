@@ -74,7 +74,7 @@ wget -qO- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
 apt-get update
 apt-cache madison docker-ce
-docker_version='29.1.4'
+docker_version='29.2.0'
 docker_version="$(apt-cache madison docker-ce | awk "/$docker_version/{print \$3}")"
 apt-get install -y "docker-ce=$docker_version" "docker-ce-cli=$docker_version" containerd.io
 docker version
@@ -108,7 +108,7 @@ function clone-repo {
     popd
 }
 
-export VERSION='29.1.4'
+export VERSION='29.2.0'
 export DOCKER_GIT_REF="docker-v$VERSION"
 export DOCKER_CLI_GIT_REF="v$VERSION"
 
