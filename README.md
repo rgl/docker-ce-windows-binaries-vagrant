@@ -1,6 +1,6 @@
 # About
 
-[![Build status](https://github.com/rgl/docker-ce-windows-binaries-vagrant/workflows/Build/badge.svg)](https://github.com/rgl/docker-ce-windows-binaries-vagrant/actions?query=workflow%3ABuild)
+[![Build status](https://github.com/rgl/docker-ce-windows-binaries-vagrant/actions/workflows/build.yml/badge.svg)](https://github.com/rgl/docker-ce-windows-binaries-vagrant/actions/workflows/build.yml)
 
 This is a [Vagrant](https://www.vagrantup.com/) Environment for building the static [moby (upstream of docker-ce)](https://github.com/moby/moby) Windows binaries.
 

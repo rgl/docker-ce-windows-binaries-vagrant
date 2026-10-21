@@ -3,13 +3,13 @@ on: [push]
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build
         run: sudo bash ./provision.sh
       - name: Archive Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docker-artifacts
           path: |
@@ -17,14 +17,16 @@ jobs:
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     name: Release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     needs:
       - build
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
+        with:
+          path: docker-artifacts
       - name: Release notes
         run: |
           echo "sha256 $(sha256sum docker-artifacts/*.zip | awk '{print $1}')" >release-notes.md

@@ -67,11 +67,17 @@ EOF
 # see https://docs.docker.com/engine/installation/linux/ubuntu/#install-using-the-repository
 # NB we can also install a specific version from https://download.docker.com/linux/ubuntu/dists/
 
-apt-get install -y gnupg
-apt-get install -y apt-transport-https #ca-certificates #software-properties-common
-wget -qO- https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-[ -z "$(apt-key fingerprint 0EBFCD88 | grep '9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88')" ] && echo 'failed to verify docker apt repo fingerprint' && exit 1
-echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
+apt-get install -y gnupg apt-transport-https software-properties-common
+wget -qO- https://download.docker.com/linux/ubuntu/gpg \
+    | gpg --dearmor -o /etc/apt/keyrings/download.docker.com.gpg
+cat >/etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+Architectures: amd64
+Signed-By: /etc/apt/keyrings/download.docker.com.gpg
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(lsb_release -cs)
+Components: stable
+EOF
 apt-get update
 apt-cache madison docker-ce
 docker_version='29.9.1'
