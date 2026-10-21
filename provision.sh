@@ -80,7 +80,7 @@ Components: stable
 EOF
 apt-get update
 apt-cache madison docker-ce
-docker_version='29.9.1'
+docker_version='29.9.2'
 docker_version="$(apt-cache madison docker-ce | awk "/$docker_version/{print \$3}" | head -1)"
 apt-get install -y "docker-ce=$docker_version" "docker-ce-cli=$docker_version" containerd.io
 docker version
@@ -114,7 +114,7 @@ function clone-repo {
     popd
 }
 
-export VERSION='29.9.1'
+export VERSION='29.9.2'
 export DOCKER_GIT_REF="docker-v$VERSION"
 export DOCKER_CLI_GIT_REF="v$VERSION"
 
